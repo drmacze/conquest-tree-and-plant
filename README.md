@@ -2,37 +2,39 @@
 
 A Minecraft Bedrock nature add-on focused on organic, realistic trees and plants reconstructed from high-detail OBJ source art.
 
-> Current version: **v0.3.2 — OBJ Source-Atlas Visual Pass**  
+> Current version: **v0.3.3 — Tree Form Pass**  
 > Required game version: **Minecraft Bedrock 1.26.45+**
 
-## v0.3.2 highlights
+## v0.3.3 highlights
 
-- Seven mobile-optimized tree silhouettes reconstructed from the supplied high-detail OBJ pack.
-- Runtime library: Oak, Walnut, Mossy Tree, Small Bark Tree, Sonnerat, Tall Bark Tree and Giant Tree.
-- Every tree has its own bark and foliage material with deterministic colors, contrast and surface character calibrated from the corresponding supplied source atlas.
-- OBJ tree worldgen no longer falls back to the old vanilla-looking procedural oak variants.
-- Custom non-full-block branch geometry replaces vanilla log silhouettes on the OBJ tree library.
-- Foliage uses a denser eight-card 3D cluster instead of cubic vanilla leaf blocks.
-- Species-specific PBR roughness and foliage subsurface values are retained for Vibrant Visuals.
-- Structures are rotated randomly during world generation and remain optimized for Android/iOS.
-- Build validation checks all seven OBJ structures, species-specific palettes, textures and Bedrock 1.26.45 minimum targeting.
+- Corrected the OBJ runtime semantic mapping: woody/trunk voxels and canopy voxels are now assigned to the proper runtime materials.
+- Seven mobile-optimized tree silhouettes remain in the runtime library: Oak, Walnut, Mossy Tree, Small Bark Tree, Sonnerat, Tall Bark Tree and Giant Tree.
+- Added irregular custom trunk geometry instead of a full vanilla log silhouette.
+- Added directional branch geometries for X, Z and both diagonal directions so branch chains read more naturally in 3D.
+- Added visible buttress/root geometry around the base of every tree, with larger root spread on Giant, Mossy and Tall variants.
+- Expanded every structure footprint with extra horizontal margin so roots and branch forms are not clipped by the original OBJ bounding box.
+- Added three canopy profiles: sparse, medium and dense. Each species receives a different foliage-card count and deterministic canopy fill rate.
+- Giant and Mossy trees use the densest foliage profile; Tall and Small Bark trees remain lighter and more open.
+- Structure feature adjustment radius is increased for the new root footprint.
+- Species-specific bark/foliage textures and Vibrant Visuals PBR settings from v0.3.2 are retained.
+- Build validation now checks the new trunk/root/leaf palettes, form geometries, all seven structures and the Bedrock 1.26.45 minimum target.
 
 ## Runtime approach
 
-The original OBJ meshes are source art, not direct runtime models. They are too dense for practical mobile Bedrock world generation, so the build pipeline measures/reconstructs their silhouettes into custom branch nodes, foliage cards and `.mcstructure` templates. This preserves the recognizable tree form while keeping the pack usable on mobile devices.
+The supplied OBJ meshes are treated as high-detail source art rather than direct runtime models. The build pipeline reconstructs their voxel silhouette into optimized `.mcstructure` templates and then applies a second form pass that identifies trunk paths, directional branches, roots and canopy regions.
 
-The original texture atlases are used as art-direction references. The build creates compact Bedrock runtime textures from species-calibrated palettes and bark/leaf pattern characteristics, avoiding a vanilla texture look while remaining deterministic and portable in CI.
+This approach keeps the recognisable proportions of the source trees while avoiding the cost of shipping hundreds of thousands of OBJ faces into a mobile Bedrock world.
 
 ## Compatibility
 
 - Minecraft Bedrock **1.26.45+** only.
 - Android and iOS are primary targets.
 - Resource Pack enables Bedrock's `pbr` capability for Vibrant Visuals.
-- No experimental toggle is intentionally required by the current v0.3.2 content.
+- No experimental toggle is intentionally required by the current v0.3.3 content.
 
 ## Roadmap
 
-- **v0.3.3 — Tree Form Pass:** stronger roots, more irregular trunk thickness, extra branch-node geometry and per-tree foliage density tuning.
+- **v0.3.4 — Tree Polish:** improve branch classification from local topology, add bark/end-grain variation and tune worldgen spacing after in-game screenshots.
 - **v0.4 — Plant Library:** dry grass, reeds, cattails, ivy, moss, bramble, wildflowers, mushrooms and additional forest-floor vegetation.
 - **v0.5 — Survival & Optimization:** saplings, growth logic, loot, leaf behavior, biome density presets and mobile performance profiles.
 - **v1.0 — Full Nature Release:** polished worldgen, complete nature library, compatibility testing and release packaging.
