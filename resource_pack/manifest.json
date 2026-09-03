@@ -2,16 +2,16 @@
   "format_version": 2,
   "header": {
     "name": "DLavie Conquest Nature - Resources",
-    "description": "OBJ-derived bark/foliage art with Vibrant Visuals-ready PBR resources.",
+    "description": "Species-specific source-atlas bark and foliage with Vibrant Visuals-ready PBR materials.",
     "uuid": "a139186a-b93b-47da-848b-1a2c06e41506",
-    "version": [0, 3, 1],
+    "version": [0, 3, 2],
     "min_engine_version": [1, 26, 45]
   },
   "modules": [
     {
       "type": "resources",
       "uuid": "b68780b7-9d06-4a4b-b099-a62a55e88f62",
-      "version": [0, 3, 1]
+      "version": [0, 3, 2]
     }
   ],
   "capabilities": ["pbr"],
