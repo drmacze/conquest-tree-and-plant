@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import zipfile
 from pathlib import Path
 
 SPECIES = {
@@ -23,6 +24,27 @@ GENERIC_LEAF = b"dlavie:obj_leaf_cluster"
 def _write_json(path: Path, data: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+
+
+def _extract_texture_archive(root: Path) -> None:
+    archive = root / "tools" / "assets" / "species_textures.zip"
+    destination = root / "resource_pack" / "textures" / "blocks"
+    if not archive.is_file():
+        raise FileNotFoundError(f"Missing source texture archive: {archive.relative_to(root)}")
+    destination.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(archive) as zf:
+        for info in zf.infolist():
+            name = Path(info.filename)
+            if info.is_dir():
+                continue
+            if name.parent != Path(".") or name.suffix.lower() != ".png" or not name.name.startswith("dlavie_"):
+                raise ValueError(f"Unsafe or unexpected species texture entry: {info.filename}")
+            target = destination / name.name
+            target.write_bytes(zf.read(info))
+    # Remove temporary payload files from earlier development iterations so they
+    # never leak into a packaged Resource Pack.
+    for stale in destination.glob("*.png.b64"):
+        stale.unlink()
 
 
 def _generate_blocks(root: Path) -> None:
@@ -104,6 +126,7 @@ def _patch_structures(root: Path) -> None:
 
 
 def apply(root: Path) -> None:
+    _extract_texture_archive(root)
     _generate_blocks(root)
     _patch_structures(root)
 
