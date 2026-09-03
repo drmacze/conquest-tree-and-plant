@@ -9,12 +9,14 @@ import sys
 import zipfile
 from pathlib import Path
 
+from generate_obj_runtime_assets import generate as generate_obj_runtime_assets
+
 ROOT = Path(__file__).resolve().parents[1]
 BP = ROOT / "behavior_pack"
 RP = ROOT / "resource_pack"
 DIST = ROOT / "dist"
-VERSION = "0.2.0"
-PACK_VERSION = [0, 2, 0]
+VERSION = "0.3.0"
+PACK_VERSION = [0, 3, 0]
 TARGET_ENGINE = [1, 26, 45]
 BLOCK_SCHEMA_FLOOR = (1, 26, 0)
 REQUIRED_TEXTURES = [
@@ -26,7 +28,10 @@ REQUIRED_TEXTURES = [
     "dlavie_clover.png",
     "dlavie_heather.png",
     "dlavie_nettle.png",
+    "dlavie_obj_bark.png",
+    "dlavie_obj_leaf.png",
 ]
+REQUIRED_STRUCTURES = [BP / "structures" / "dlavie" / "obj_oak_01.mcstructure"]
 
 
 def parse_version(value: object) -> tuple[int, int, int] | None:
@@ -43,7 +48,6 @@ def validate_json() -> None:
     errors: list[str] = []
     json_files = sorted([*BP.rglob("*.json"), *RP.rglob("*.json")])
     parsed: dict[Path, object] = {}
-
     for path in json_files:
         try:
             with path.open("r", encoding="utf-8") as handle:
@@ -79,8 +83,10 @@ def validate_json() -> None:
     texture_dir = RP / "textures" / "blocks"
     for filename in REQUIRED_TEXTURES:
         if not (texture_dir / filename).is_file():
-            errors.append(f"resource_pack/textures/blocks/{filename}: required original v0.2 texture missing")
-
+            errors.append(f"resource_pack/textures/blocks/{filename}: required texture missing")
+    for structure in REQUIRED_STRUCTURES:
+        if not structure.is_file() or structure.stat().st_size < 128:
+            errors.append(f"{structure.relative_to(ROOT)}: required OBJ-derived structure missing or invalid")
     for pack in (BP, RP):
         if not (pack / "pack_icon.png").is_file():
             errors.append(f"{pack.name}/pack_icon.png: pack icon missing")
@@ -90,8 +96,7 @@ def validate_json() -> None:
         for error in errors:
             print(f"  - {error}", file=sys.stderr)
         raise SystemExit(1)
-
-    print(f"Validated {len(json_files)} JSON files for DLavie Conquest Nature {VERSION} / Bedrock 1.26.45+.")
+    print(f"Validated {len(json_files)} JSON files + OBJ structure for DLavie Conquest Nature {VERSION} / Bedrock 1.26.45+.")
 
 
 def zip_directory(source: Path, destination: Path) -> None:
@@ -102,15 +107,14 @@ def zip_directory(source: Path, destination: Path) -> None:
 
 
 def build() -> None:
+    generate_obj_runtime_assets(ROOT)
     validate_json()
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
-
     bp_mcpack = DIST / f"DLavie-Conquest-Nature-BP-{VERSION}.mcpack"
     rp_mcpack = DIST / f"DLavie-Conquest-Nature-RP-{VERSION}.mcpack"
     mcaddon = DIST / f"DLavie-Conquest-Nature-{VERSION}.mcaddon"
-
     zip_directory(BP, bp_mcpack)
     zip_directory(RP, rp_mcpack)
     with zipfile.ZipFile(mcaddon, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
@@ -118,7 +122,6 @@ def build() -> None:
             for path in sorted(source.rglob("*")):
                 if path.is_file():
                     archive.write(path, Path(prefix) / path.relative_to(source))
-
     print("Built:")
     for artifact in (bp_mcpack, rp_mcpack, mcaddon):
         print(f"  - {artifact.relative_to(ROOT)}")
