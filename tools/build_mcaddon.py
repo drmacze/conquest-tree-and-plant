@@ -9,15 +9,16 @@ import sys
 import zipfile
 from pathlib import Path
 
-from apply_species_visuals import PAIRS, apply as apply_species_visuals
+from apply_species_visuals import apply as apply_species_visuals
+from apply_tree_forms import SPECIES as TREE_FORM_SPECIES, apply as apply_tree_forms
 from generate_obj_runtime_assets import generate as generate_obj_runtime_assets
 
 ROOT = Path(__file__).resolve().parents[1]
 BP = ROOT / "behavior_pack"
 RP = ROOT / "resource_pack"
 DIST = ROOT / "dist"
-VERSION = "0.3.2"
-PACK_VERSION = [0, 3, 2]
+VERSION = "0.3.3"
+PACK_VERSION = [0, 3, 3]
 TARGET_ENGINE = [1, 26, 45]
 BLOCK_SCHEMA_FLOOR = (1, 26, 0)
 REQUIRED_TEXTURES = [
@@ -46,16 +47,19 @@ REQUIRED_TEXTURES = [
     "dlavie_tal_bark.png",
     "dlavie_tal_leaf.png",
 ]
-OBJ_STRUCTURE_NAMES = [
-    "obj_oak_01",
-    "obj_walnut_01",
-    "obj_mossy_01",
-    "obj_bark_small_01",
-    "obj_giant_01",
-    "obj_sonnerat_01",
-    "obj_bark_tall_01",
-]
+OBJ_STRUCTURE_NAMES = list(TREE_FORM_SPECIES)
 REQUIRED_STRUCTURES = [BP / "structures" / "dlavie" / f"{name}.mcstructure" for name in OBJ_STRUCTURE_NAMES]
+REQUIRED_FORM_GEOMETRIES = [
+    "obj_trunk.geo.json",
+    "obj_branch_x.geo.json",
+    "obj_branch_z.geo.json",
+    "obj_branch_d1.geo.json",
+    "obj_branch_d2.geo.json",
+    "obj_root.geo.json",
+    "obj_leaf_sparse.geo.json",
+    "obj_leaf_medium.geo.json",
+    "obj_leaf_dense.geo.json",
+]
 
 
 def parse_version(value: object) -> tuple[int, int, int] | None:
@@ -109,19 +113,33 @@ def validate_json() -> None:
         if not (texture_dir / filename).is_file():
             errors.append(f"resource_pack/textures/blocks/{filename}: required texture missing")
 
+    geometry_dir = RP / "models" / "blocks"
+    for filename in REQUIRED_FORM_GEOMETRIES:
+        if not (geometry_dir / filename).is_file():
+            errors.append(f"resource_pack/models/blocks/{filename}: required v0.3.3 form geometry missing")
+
     for structure in REQUIRED_STRUCTURES:
         if not structure.is_file() or structure.stat().st_size < 128:
             errors.append(f"{structure.relative_to(ROOT)}: required OBJ-derived structure missing or invalid")
 
-    for name, (branch, leaf) in PAIRS.items():
+    for name, meta in TREE_FORM_SPECIES.items():
         path = BP / "structures" / "dlavie" / f"{name}.mcstructure"
         if not path.is_file():
             continue
         data = path.read_bytes()
-        branch_id = f"dlavie:{branch}".encode()
-        leaf_id = f"dlavie:{leaf}".encode()
-        if branch_id not in data or leaf_id not in data:
-            errors.append(f"{path.relative_to(ROOT)}: species-specific visual palette missing")
+        code = meta["code"]
+        required_ids = [
+            f"dlavie:{code}_trunk".encode(),
+            f"dlavie:{code}_root".encode(),
+            f"dlavie:{code}_leaf_cluster".encode(),
+        ]
+        for block_id in required_ids:
+            if block_id not in data:
+                errors.append(f"{path.relative_to(ROOT)}: missing form palette id {block_id.decode()}")
+
+    form_report = ROOT / "docs" / "V033_TREE_FORMS.json"
+    if not form_report.is_file():
+        errors.append("docs/V033_TREE_FORMS.json: v0.3.3 form report missing")
 
     for pack in (BP, RP):
         if not (pack / "pack_icon.png").is_file():
@@ -133,7 +151,7 @@ def validate_json() -> None:
             print(f"  - {error}", file=sys.stderr)
         raise SystemExit(1)
     print(
-        f"Validated {len(json_files)} JSON files + {len(REQUIRED_STRUCTURES)} OBJ structures "
+        f"Validated {len(json_files)} JSON files + {len(REQUIRED_STRUCTURES)} directional OBJ structures "
         f"for DLavie Conquest Nature {VERSION} / Bedrock 1.26.45+."
     )
 
@@ -148,6 +166,7 @@ def zip_directory(source: Path, destination: Path) -> None:
 def build() -> None:
     generate_obj_runtime_assets(ROOT)
     apply_species_visuals(ROOT)
+    apply_tree_forms(ROOT)
     validate_json()
     if DIST.exists():
         shutil.rmtree(DIST)
