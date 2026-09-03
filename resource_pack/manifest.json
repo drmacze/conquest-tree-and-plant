@@ -2,7 +2,7 @@
   "format_version": 2,
   "header": {
     "name": "DLavie Conquest Nature - Resources",
-    "description": "Visual resources for DLavie Conquest Nature.",
+    "description": "Visual resources for DLavie Conquest Nature on Minecraft Bedrock 1.26.45+.",
     "uuid": "a139186a-b93b-47da-848b-1a2c06e41506",
     "version": [
       0,
@@ -12,7 +12,7 @@
     "min_engine_version": [
       1,
       26,
-      0
+      45
     ]
   },
   "modules": [
