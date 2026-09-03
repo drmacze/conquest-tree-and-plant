@@ -1,26 +1,25 @@
 # DLavie Conquest Nature Roadmap
 
-## v0.1 — Functional foundation
+## v0.1 — Functional foundation ✅
 - Bedrock behavior/resource pack manifests
 - Custom fern and grass blocks
-- Custom airy leaf-cluster geometry
-- Custom branch/log block
-- Two oak tree sizes
-- Weighted tree selection
+- Airy leaf-cluster geometry
+- Oak world generation
 - Forest floor scattering
-- Forest biome feature rules
+- Bedrock 1.26.45+ compatibility lock
 
-## v0.2 — Visual identity
-- Replace temporary vanilla texture references with original DLavie textures
-- Add bark end-cap material and branch geometry
-- Add randomized leaf cluster shapes and rotations
-- Add PBR-ready texture set for Vibrant Visuals
-- Add pack icon and in-game thumbnails
+## v0.2 — Visual identity ✅
+- Original DLavie nature textures
+- Bark end-cap material
+- Three foliage silhouettes
+- Fancy-trunk procedural oak branches
+- Three woodland oak variants + ancient oak
+- Clover, heather and nettle
+- Vibrant Visuals `pbr` capability
+- PBR texture sets with foliage subsurface values
+- Pack icon and localized names
 
 ## v0.3 — Tree library
-Target species:
-- Oak
-- Ancient oak
 - Birch
 - Beech
 - Pine
@@ -32,16 +31,11 @@ Target species:
 - Dead tree
 - Fallen logs
 
-Each species should have multiple silhouettes and age classes.
+Each species will receive multiple silhouettes and age classes. Oak will also gain additional ancient/rooted variants.
 
 ## v0.4 — Plant library
-Target vegetation:
-- Fern / tall fern
-- Meadow grass
+- Tall fern
 - Dry grass
-- Clover
-- Heather
-- Nettle
 - Reed
 - Cattail
 - Ivy
@@ -49,11 +43,20 @@ Target vegetation:
 - Bramble
 - Wildflowers
 - Mushrooms
+- Wetland vegetation
 
 ## v0.5 — Survival and optimization
 - Saplings and growth logic
 - Loot/drop tables
 - Leaf decay strategy
 - Biome-aware density presets
-- Mobile performance profile
-- Compatibility testing on current Minecraft Bedrock
+- Mobile performance profiles
+- Android/iOS compatibility testing
+
+## v1.0 — Full release target
+- Mature tree and plant library
+- Stable worldgen
+- Survival integration
+- PBR/Vibrant Visuals art pass
+- Mobile optimization
+- Migration-safe pack versioning

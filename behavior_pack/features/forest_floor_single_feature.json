@@ -1,24 +1,17 @@
 {
-  "format_version": "1.21.60",
+  "format_version": "1.26.0",
   "minecraft:single_block_feature": {
-    "description": {
-      "identifier": "dlavie:forest_floor_single_feature"
-    },
+    "description": {"identifier": "dlavie:forest_floor_single_feature"},
     "places_block": [
-      {
-        "block": "dlavie:forest_fern",
-        "weight": 5
-      },
-      {
-        "block": "dlavie:meadow_grass",
-        "weight": 3
-      }
+      {"block": "dlavie:forest_fern", "weight": 6},
+      {"block": "dlavie:meadow_grass", "weight": 5},
+      {"block": "dlavie:clover", "weight": 4},
+      {"block": "dlavie:heather", "weight": 2},
+      {"block": "dlavie:nettle", "weight": 3}
     ],
     "randomize_rotation": true,
     "enforce_survivability_rules": false,
     "enforce_placement_rules": false,
-    "may_replace": [
-      "minecraft:air"
-    ]
+    "may_replace": ["minecraft:air"]
   }
 }

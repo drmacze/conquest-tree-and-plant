@@ -4,17 +4,13 @@
   "padding": 8,
   "num_mip_levels": 4,
   "texture_data": {
-    "dlavie_forest_fern": {
-      "textures": "textures/blocks/fern"
-    },
-    "dlavie_meadow_grass": {
-      "textures": "textures/blocks/tallgrass"
-    },
-    "dlavie_leaf_cluster": {
-      "textures": "textures/blocks/leaves_oak"
-    },
-    "dlavie_branch_bark": {
-      "textures": "textures/blocks/log_oak"
-    }
+    "dlavie_forest_fern": {"textures": "textures/nature/fern"},
+    "dlavie_meadow_grass": {"textures": "textures/nature/meadow_grass"},
+    "dlavie_clover": {"textures": "textures/nature/clover"},
+    "dlavie_heather": {"textures": "textures/nature/heather"},
+    "dlavie_nettle": {"textures": "textures/nature/nettle"},
+    "dlavie_leaf_cluster": {"textures": "textures/nature/leaf_oak"},
+    "dlavie_branch_bark": {"textures": "textures/nature/branch_bark"},
+    "dlavie_branch_end": {"textures": "textures/nature/branch_end"}
   }
 }
