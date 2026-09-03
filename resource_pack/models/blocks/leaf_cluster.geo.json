@@ -3,106 +3,19 @@
   "minecraft:geometry": [
     {
       "description": {
-        "identifier": "geometry.dlavie.leaf_cluster",
+        "identifier": "geometry.dlavie.leaf_cluster_v2",
         "texture_width": 16,
         "texture_height": 16,
-        "visible_bounds_width": 2.5,
-        "visible_bounds_height": 2.5,
-        "visible_bounds_offset": [
-          0,
-          0.75,
-          0
-        ]
+        "visible_bounds_width": 3.0,
+        "visible_bounds_height": 3.0,
+        "visible_bounds_offset": [0, 0.75, 0]
       },
       "bones": [
-        {
-          "name": "plane_x",
-          "pivot": [
-            0,
-            8,
-            0
-          ],
-          "cubes": [
-            {
-              "origin": [
-                -8,
-                0,
-                -0.5
-              ],
-              "size": [
-                16,
-                16,
-                1
-              ],
-              "uv": [
-                0,
-                0
-              ]
-            }
-          ]
-        },
-        {
-          "name": "plane_z",
-          "pivot": [
-            0,
-            8,
-            0
-          ],
-          "cubes": [
-            {
-              "origin": [
-                -0.5,
-                0,
-                -8
-              ],
-              "size": [
-                1,
-                16,
-                16
-              ],
-              "uv": [
-                0,
-                0
-              ]
-            }
-          ]
-        },
-        {
-          "name": "plane_diag",
-          "pivot": [
-            0,
-            8,
-            0
-          ],
-          "cubes": [
-            {
-              "origin": [
-                -8,
-                0,
-                -0.5
-              ],
-              "size": [
-                16,
-                16,
-                1
-              ],
-              "pivot": [
-                0,
-                8,
-                0
-              ],
-              "rotation": [
-                0,
-                45,
-                0
-              ],
-              "uv": [
-                0,
-                0
-              ]
-            }
-          ]
-        }
+        {"name": "plane_x", "pivot": [0, 8, 0], "cubes": [{"origin": [-8, 0, -0.35], "size": [16, 16, 0.7], "uv": [0, 0]}]},
+        {"name": "plane_z", "pivot": [0, 8, 0], "cubes": [{"origin": [-0.35, 0, -8], "size": [0.7, 16, 16], "uv": [0, 0]}]},
+        {"name": "plane_diag_a", "pivot": [0, 8, 0], "cubes": [{"origin": [-8, 0, -0.35], "size": [16, 16, 0.7], "pivot": [0, 8, 0], "rotation": [0, 45, 0], "uv": [0, 0]}]},
+        {"name": "plane_diag_b", "pivot": [0, 8, 0], "cubes": [{"origin": [-8, 0, -0.35], "size": [16, 16, 0.7], "pivot": [0, 8, 0], "rotation": [0, -45, 0], "uv": [0, 0]}]},
+        {"name": "plane_tilt", "pivot": [0, 8, 0], "cubes": [{"origin": [-7, 1, -0.3], "size": [14, 14, 0.6], "pivot": [0, 8, 0], "rotation": [20, 22.5, 0], "uv": [0, 0]}]}
       ]
     }
   ]

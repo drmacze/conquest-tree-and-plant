@@ -1,0 +1,14 @@
+{
+  "format_version": "1.26.0",
+  "minecraft:scatter_feature": {
+    "description": {"identifier": "dlavie:meadow_floor_scatter_feature"},
+    "places_feature": "dlavie:meadow_floor_single_feature",
+    "distribution": {
+      "iterations": 9,
+      "scatter_chance": {"numerator": 2, "denominator": 3},
+      "x": {"distribution": "uniform", "extent": [0, 15]},
+      "y": "query.heightmap(variable.worldx, variable.worldz)",
+      "z": {"distribution": "uniform", "extent": [0, 15]}
+    }
+  }
+}

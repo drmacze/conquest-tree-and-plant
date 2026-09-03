@@ -1,11 +1,9 @@
 {
-  "format_version": "1.26.0",
+  "format_version": "1.26.20",
   "minecraft:block": {
     "description": {
       "identifier": "dlavie:branch_log",
-      "menu_category": {
-        "category": "nature"
-      }
+      "menu_category": {"category": "nature"}
     },
     "components": {
       "minecraft:geometry": "minecraft:geometry.full_block",
@@ -14,11 +12,16 @@
           "texture": "dlavie_branch_bark",
           "render_method": "opaque",
           "ambient_occlusion": 1.0
-        }
+        },
+        "up": {
+          "texture": "dlavie_branch_end",
+          "render_method": "opaque",
+          "ambient_occlusion": 1.0
+        },
+        "down": "up"
       },
-      "minecraft:destructible_by_mining": {
-        "seconds_to_destroy": 1.5
-      }
+      "minecraft:destructible_by_mining": {"seconds_to_destroy": 1.5},
+      "minecraft:flammable": {"catch_chance_modifier": 5, "destroy_chance_modifier": 5}
     }
   }
 }

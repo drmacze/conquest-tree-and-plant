@@ -2,33 +2,20 @@
   "format_version": 2,
   "header": {
     "name": "DLavie Conquest Nature - Resources",
-    "description": "Visual resources for DLavie Conquest Nature on Minecraft Bedrock 1.26.45+.",
+    "description": "Original DLavie foliage, bark and Vibrant Visuals-ready PBR resources.",
     "uuid": "a139186a-b93b-47da-848b-1a2c06e41506",
-    "version": [
-      0,
-      1,
-      0
-    ],
-    "min_engine_version": [
-      1,
-      26,
-      45
-    ]
+    "version": [0, 2, 0],
+    "min_engine_version": [1, 26, 45]
   },
   "modules": [
     {
       "type": "resources",
       "uuid": "b68780b7-9d06-4a4b-b099-a62a55e88f62",
-      "version": [
-        0,
-        1,
-        0
-      ]
+      "version": [0, 2, 0]
     }
   ],
+  "capabilities": ["pbr"],
   "metadata": {
-    "authors": [
-      "DLavie / drmacze"
-    ]
+    "authors": ["DLavie / drmacze"]
   }
 }

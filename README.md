@@ -1,61 +1,47 @@
 # DLavie Conquest Nature
 
-A Bedrock Edition nature add-on focused on **organic, Conquest-inspired trees and plants** without redistributing Conquest Reforged assets.
+A Minecraft Bedrock nature add-on focused on organic, realistic, Conquest-inspired trees and plants using original DLavie assets.
 
-> Status: early development / v0.1 foundation.
-> Required game version: **Minecraft Bedrock 1.26.45 or newer**.
+> Current version: **v0.2.0 — Visual Identity**  
+> Required game version: **Minecraft Bedrock 1.26.45+**
 
-## Current prototype
+## v0.2 highlights
 
-The first implementation contains:
-- Behavior Pack + Resource Pack manifests locked to `min_engine_version: [1, 26, 45]`
-- Custom `forest_fern` and `meadow_grass` vegetation blocks
-- A custom three-plane `leaf_cluster` geometry for less cubic foliage
-- A custom `branch_log` block
-- Woodland and ancient oak world-generation features
-- Weighted tree selection
-- Modern 1.21.20+ scatter/distribution schema for forest-floor generation
-- Forest biome feature rules
-- Build validation that rejects manifests targeting anything other than Bedrock 1.26.45
+- Original DLavie textures replace the temporary vanilla texture references.
+- New bark side + end-grain materials.
+- New oak leaf, fern, meadow grass, clover, heather and nettle artwork.
+- Five-plane oak leaf cluster geometry for a less cubic canopy silhouette.
+- Woodland and Ancient Oak now use Bedrock `fancy_trunk` branch generation.
+- Added clover, heather and nettle custom blocks.
+- Expanded forest-floor vegetation weights.
+- Added a separate plains/meadow vegetation distribution pass.
+- Resource Pack enables the cross-platform `pbr` capability for Vibrant Visuals.
+- PBR texture sets define roughness and foliage subsurface scattering.
+- New pack icon for both BP and RP.
+- Build validation remains locked to Bedrock `min_engine_version: [1, 26, 45]`.
 
-This is intentionally a functional foundation. The current texture atlas points at vanilla Bedrock textures so the pack can be tested before the original DLavie art pass is added.
+## Current scope
 
-## Repository layout
+v0.2 is a major visual/technical step, but **it is not the full pack yet**. The next versions expand tree species, silhouettes, plants, survival mechanics and mobile optimization.
 
-```text
-behavior_pack/
-  blocks/
-  features/
-  feature_rules/
-  manifest.json
+## Target roadmap
 
-resource_pack/
-  models/blocks/
-  textures/
-  manifest.json
+- **v0.3 — Tree Library:** birch, beech, pine, spruce, fir, willow, cypress, maple, dead trees and fallen logs.
+- **v0.4 — Plant Library:** dry grass, reeds, cattails, ivy, moss, bramble, wildflowers, mushrooms and more.
+- **v0.5 — Survival & Optimization:** saplings, growth logic, loot, leaf decay, biome density presets and mobile profiles.
+- **v1.0 — Full Nature Release:** polished worldgen, complete library, compatibility testing and production packaging.
 
-docs/
-  ROADMAP.md
-```
+## Compatibility
 
-## Target
-
-- Minecraft Bedrock **1.26.45+**
-- Android and iOS
-- Survival-friendly trees
-- Dense but optimized forests
-- Original DLavie visual assets
-- Vibrant Visuals / PBR-ready art direction
-- No dependency on experimental toggles unless a future feature explicitly requires one
-
-## Compatibility policy
-
-Both pack manifests use `min_engine_version: [1, 26, 45]`. The build script validates this target and also requires custom block definitions to use the 1.26-era block schema so accidental compatibility regressions are caught before a package is produced.
+- Minecraft Bedrock **1.26.45+** only.
+- Android and iOS are primary targets.
+- No experimental toggle is required by the current v0.2 content.
+- Vibrant Visuals is supported through Bedrock's `pbr` resource-pack capability.
 
 ## Namespace
 
 All custom content uses the `dlavie:` namespace.
 
-## Development note
+## Asset policy
 
-The project is inspired by the visual language of realistic Minecraft foliage. It is not a redistribution or direct port of Conquest Reforged's copyrighted models or textures.
+This project is inspired by realistic Minecraft foliage design. It does not redistribute or directly port Conquest Reforged textures or models; v0.2 uses original DLavie visual assets.

@@ -1,38 +1,24 @@
 {
-  "format_version": "1.26.0",
+  "format_version": "1.26.20",
   "minecraft:block": {
     "description": {
       "identifier": "dlavie:leaf_cluster",
-      "menu_category": {
-        "category": "nature"
-      }
+      "menu_category": {"category": "nature"}
     },
     "components": {
-      "minecraft:geometry": "geometry.dlavie.leaf_cluster",
+      "minecraft:geometry": "geometry.dlavie.leaf_cluster_v2",
       "minecraft:material_instances": {
         "*": {
           "texture": "dlavie_leaf_cluster",
-          "render_method": "alpha_test_single_sided",
+          "render_method": "double_sided",
           "ambient_occlusion": 0.0
         }
       },
-      "minecraft:destructible_by_mining": {
-        "seconds_to_destroy": 0.2
-      },
+      "minecraft:destructible_by_mining": {"seconds_to_destroy": 0.15},
       "minecraft:collision_box": false,
-      "minecraft:selection_box": {
-        "origin": [
-          -8,
-          0,
-          -8
-        ],
-        "size": [
-          16,
-          16,
-          16
-        ]
-      },
-      "minecraft:light_dampening": 0
+      "minecraft:selection_box": {"origin": [-8, 0, -8], "size": [16, 16, 16]},
+      "minecraft:light_dampening": 0,
+      "minecraft:flammable": {"catch_chance_modifier": 30, "destroy_chance_modifier": 60}
     }
   }
 }
