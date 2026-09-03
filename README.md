@@ -9,7 +9,7 @@ A Minecraft Bedrock nature add-on focused on organic, realistic trees and plants
 
 - Seven mobile-optimized tree silhouettes reconstructed from the supplied high-detail OBJ pack.
 - Runtime library: Oak, Walnut, Mossy Tree, Small Bark Tree, Sonnerat, Tall Bark Tree and Giant Tree.
-- Every tree now has its own bark and foliage material generated from the corresponding supplied source texture atlas.
+- Every tree has its own bark and foliage material with deterministic colors, contrast and surface character calibrated from the corresponding supplied source atlas.
 - OBJ tree worldgen no longer falls back to the old vanilla-looking procedural oak variants.
 - Custom non-full-block branch geometry replaces vanilla log silhouettes on the OBJ tree library.
 - Foliage uses a denser eight-card 3D cluster instead of cubic vanilla leaf blocks.
@@ -20,6 +20,8 @@ A Minecraft Bedrock nature add-on focused on organic, realistic trees and plants
 ## Runtime approach
 
 The original OBJ meshes are source art, not direct runtime models. They are too dense for practical mobile Bedrock world generation, so the build pipeline measures/reconstructs their silhouettes into custom branch nodes, foliage cards and `.mcstructure` templates. This preserves the recognizable tree form while keeping the pack usable on mobile devices.
+
+The original texture atlases are used as art-direction references. The build creates compact Bedrock runtime textures from species-calibrated palettes and bark/leaf pattern characteristics, avoiding a vanilla texture look while remaining deterministic and portable in CI.
 
 ## Compatibility
 
