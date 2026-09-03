@@ -1,0 +1,18 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:weighted_random_feature": {
+    "description": {
+      "identifier": "dlavie:oak_selector_feature"
+    },
+    "features": [
+      [
+        "dlavie:woodland_oak_feature",
+        8
+      ],
+      [
+        "dlavie:ancient_oak_feature",
+        2
+      ]
+    ]
+  }
+}

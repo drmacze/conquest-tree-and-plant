@@ -1,0 +1,20 @@
+{
+  "resource_pack_name": "dlavie_conquest_nature",
+  "texture_name": "atlas.terrain",
+  "padding": 8,
+  "num_mip_levels": 4,
+  "texture_data": {
+    "dlavie_forest_fern": {
+      "textures": "textures/blocks/fern"
+    },
+    "dlavie_meadow_grass": {
+      "textures": "textures/blocks/tallgrass"
+    },
+    "dlavie_leaf_cluster": {
+      "textures": "textures/blocks/leaves_oak"
+    },
+    "dlavie_branch_bark": {
+      "textures": "textures/blocks/log_oak"
+    }
+  }
+}
