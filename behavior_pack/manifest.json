@@ -2,22 +2,22 @@
   "format_version": 2,
   "header": {
     "name": "DLavie Conquest Nature - Behavior",
-    "description": "Organic Conquest-inspired nature generation for Minecraft Bedrock 1.26.45+.",
+    "description": "Seven OBJ-derived Conquest-style trees with corrected trunk/canopy semantics, roots and directional branch forms for Minecraft Bedrock 1.26.45+.",
     "uuid": "5c7dc4d5-61cf-40bb-a8ec-333c00dc462a",
-    "version": [0, 2, 0],
+    "version": [0, 3, 3],
     "min_engine_version": [1, 26, 45]
   },
   "modules": [
     {
       "type": "data",
       "uuid": "d286b8c6-d13c-4ef0-9574-4d707802fb27",
-      "version": [0, 2, 0]
+      "version": [0, 3, 3]
     }
   ],
   "dependencies": [
     {
       "uuid": "a139186a-b93b-47da-848b-1a2c06e41506",
-      "version": [0, 2, 0]
+      "version": [0, 3, 3]
     }
   ],
   "metadata": {

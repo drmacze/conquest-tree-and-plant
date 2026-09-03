@@ -1,0 +1,28 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:structure_template_feature": {
+    "description": {
+      "identifier": "dlavie:obj_oak_01_structure_feature"
+    },
+    "structure_name": "dlavie:obj_oak_01",
+    "adjustment_radius": 1,
+    "facing_direction": "random",
+    "ground_level": 0,
+    "rotate_around_center": true,
+    "constraints": {
+      "unburied": {},
+      "block_intersection": {
+        "block_allowlist": [
+          "minecraft:air",
+          "minecraft:oak_leaves",
+          "minecraft:birch_leaves",
+          "dlavie:forest_fern",
+          "dlavie:meadow_grass",
+          "dlavie:clover_patch",
+          "dlavie:heather",
+          "dlavie:nettle"
+        ]
+      }
+    }
+  }
+}

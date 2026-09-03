@@ -9,12 +9,16 @@ import sys
 import zipfile
 from pathlib import Path
 
+from apply_species_visuals import apply as apply_species_visuals
+from apply_tree_forms import SPECIES as TREE_FORM_SPECIES, apply as apply_tree_forms
+from generate_obj_runtime_assets import generate as generate_obj_runtime_assets
+
 ROOT = Path(__file__).resolve().parents[1]
 BP = ROOT / "behavior_pack"
 RP = ROOT / "resource_pack"
 DIST = ROOT / "dist"
-VERSION = "0.2.0"
-PACK_VERSION = [0, 2, 0]
+VERSION = "0.3.3"
+PACK_VERSION = [0, 3, 3]
 TARGET_ENGINE = [1, 26, 45]
 BLOCK_SCHEMA_FLOOR = (1, 26, 0)
 REQUIRED_TEXTURES = [
@@ -26,6 +30,35 @@ REQUIRED_TEXTURES = [
     "dlavie_clover.png",
     "dlavie_heather.png",
     "dlavie_nettle.png",
+    "dlavie_obj_bark.png",
+    "dlavie_obj_leaf.png",
+    "dlavie_wal_bark.png",
+    "dlavie_wal_leaf.png",
+    "dlavie_mos_bark.png",
+    "dlavie_mos_leaf.png",
+    "dlavie_sml_bark.png",
+    "dlavie_sml_leaf.png",
+    "dlavie_oak_bark.png",
+    "dlavie_oak_leaf.png",
+    "dlavie_gnt_bark.png",
+    "dlavie_gnt_leaf.png",
+    "dlavie_son_bark.png",
+    "dlavie_son_leaf.png",
+    "dlavie_tal_bark.png",
+    "dlavie_tal_leaf.png",
+]
+OBJ_STRUCTURE_NAMES = list(TREE_FORM_SPECIES)
+REQUIRED_STRUCTURES = [BP / "structures" / "dlavie" / f"{name}.mcstructure" for name in OBJ_STRUCTURE_NAMES]
+REQUIRED_FORM_GEOMETRIES = [
+    "obj_trunk.geo.json",
+    "obj_branch_x.geo.json",
+    "obj_branch_z.geo.json",
+    "obj_branch_d1.geo.json",
+    "obj_branch_d2.geo.json",
+    "obj_root.geo.json",
+    "obj_leaf_sparse.geo.json",
+    "obj_leaf_medium.geo.json",
+    "obj_leaf_dense.geo.json",
 ]
 
 
@@ -43,7 +76,6 @@ def validate_json() -> None:
     errors: list[str] = []
     json_files = sorted([*BP.rglob("*.json"), *RP.rglob("*.json")])
     parsed: dict[Path, object] = {}
-
     for path in json_files:
         try:
             with path.open("r", encoding="utf-8") as handle:
@@ -79,7 +111,35 @@ def validate_json() -> None:
     texture_dir = RP / "textures" / "blocks"
     for filename in REQUIRED_TEXTURES:
         if not (texture_dir / filename).is_file():
-            errors.append(f"resource_pack/textures/blocks/{filename}: required original v0.2 texture missing")
+            errors.append(f"resource_pack/textures/blocks/{filename}: required texture missing")
+
+    geometry_dir = RP / "models" / "blocks"
+    for filename in REQUIRED_FORM_GEOMETRIES:
+        if not (geometry_dir / filename).is_file():
+            errors.append(f"resource_pack/models/blocks/{filename}: required v0.3.3 form geometry missing")
+
+    for structure in REQUIRED_STRUCTURES:
+        if not structure.is_file() or structure.stat().st_size < 128:
+            errors.append(f"{structure.relative_to(ROOT)}: required OBJ-derived structure missing or invalid")
+
+    for name, meta in TREE_FORM_SPECIES.items():
+        path = BP / "structures" / "dlavie" / f"{name}.mcstructure"
+        if not path.is_file():
+            continue
+        data = path.read_bytes()
+        code = meta["code"]
+        required_ids = [
+            f"dlavie:{code}_trunk".encode(),
+            f"dlavie:{code}_root".encode(),
+            f"dlavie:{code}_leaf_cluster".encode(),
+        ]
+        for block_id in required_ids:
+            if block_id not in data:
+                errors.append(f"{path.relative_to(ROOT)}: missing form palette id {block_id.decode()}")
+
+    form_report = ROOT / "docs" / "V033_TREE_FORMS.json"
+    if not form_report.is_file():
+        errors.append("docs/V033_TREE_FORMS.json: v0.3.3 form report missing")
 
     for pack in (BP, RP):
         if not (pack / "pack_icon.png").is_file():
@@ -90,8 +150,10 @@ def validate_json() -> None:
         for error in errors:
             print(f"  - {error}", file=sys.stderr)
         raise SystemExit(1)
-
-    print(f"Validated {len(json_files)} JSON files for DLavie Conquest Nature {VERSION} / Bedrock 1.26.45+.")
+    print(
+        f"Validated {len(json_files)} JSON files + {len(REQUIRED_STRUCTURES)} directional OBJ structures "
+        f"for DLavie Conquest Nature {VERSION} / Bedrock 1.26.45+."
+    )
 
 
 def zip_directory(source: Path, destination: Path) -> None:
@@ -102,15 +164,16 @@ def zip_directory(source: Path, destination: Path) -> None:
 
 
 def build() -> None:
+    generate_obj_runtime_assets(ROOT)
+    apply_species_visuals(ROOT)
+    apply_tree_forms(ROOT)
     validate_json()
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
-
     bp_mcpack = DIST / f"DLavie-Conquest-Nature-BP-{VERSION}.mcpack"
     rp_mcpack = DIST / f"DLavie-Conquest-Nature-RP-{VERSION}.mcpack"
     mcaddon = DIST / f"DLavie-Conquest-Nature-{VERSION}.mcaddon"
-
     zip_directory(BP, bp_mcpack)
     zip_directory(RP, rp_mcpack)
     with zipfile.ZipFile(mcaddon, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
@@ -118,7 +181,6 @@ def build() -> None:
             for path in sorted(source.rglob("*")):
                 if path.is_file():
                     archive.write(path, Path(prefix) / path.relative_to(source))
-
     print("Built:")
     for artifact in (bp_mcpack, rp_mcpack, mcaddon):
         print(f"  - {artifact.relative_to(ROOT)}")

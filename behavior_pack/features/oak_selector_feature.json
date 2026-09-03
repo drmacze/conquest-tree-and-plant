@@ -5,14 +5,13 @@
       "identifier": "dlavie:oak_selector_feature"
     },
     "features": [
-      [
-        "dlavie:woodland_oak_feature",
-        8
-      ],
-      [
-        "dlavie:ancient_oak_feature",
-        2
-      ]
+      ["dlavie:obj_oak_01_structure_feature", 5],
+      ["dlavie:obj_walnut_01_structure_feature", 3],
+      ["dlavie:obj_mossy_01_structure_feature", 3],
+      ["dlavie:obj_bark_small_01_structure_feature", 2],
+      ["dlavie:obj_sonnerat_01_structure_feature", 2],
+      ["dlavie:obj_bark_tall_01_structure_feature", 2],
+      ["dlavie:obj_giant_01_structure_feature", 1]
     ]
   }
 }
