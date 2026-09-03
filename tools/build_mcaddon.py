@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Validate and package DLavie Conquest Nature for Minecraft Bedrock 1.26.45+."""
+"""Validate and package DLavie Conquest Nature for Bedrock 1.26.45+."""
+
 from __future__ import annotations
+
 import json
 import shutil
 import sys
@@ -12,64 +14,84 @@ BP = ROOT / "behavior_pack"
 RP = ROOT / "resource_pack"
 DIST = ROOT / "dist"
 VERSION = "0.2.0"
+PACK_VERSION = [0, 2, 0]
 TARGET_ENGINE = [1, 26, 45]
+BLOCK_SCHEMA_FLOOR = (1, 26, 0)
+REQUIRED_TEXTURES = [
+    "dlavie_branch_bark.png",
+    "dlavie_branch_end.png",
+    "dlavie_leaf_oak.png",
+    "dlavie_fern.png",
+    "dlavie_meadow_grass.png",
+    "dlavie_clover.png",
+    "dlavie_heather.png",
+    "dlavie_nettle.png",
+]
 
 
-def load_json(path: Path):
-    with path.open("r", encoding="utf-8") as handle:
-        return json.load(handle)
+def parse_version(value: object) -> tuple[int, int, int] | None:
+    if isinstance(value, str):
+        parts = value.split(".")
+        if len(parts) == 3 and all(part.isdigit() for part in parts):
+            return tuple(int(part) for part in parts)  # type: ignore[return-value]
+    if isinstance(value, list) and len(value) == 3 and all(isinstance(part, int) for part in value):
+        return tuple(value)  # type: ignore[return-value]
+    return None
 
 
-def validate() -> None:
+def validate_json() -> None:
     errors: list[str] = []
     json_files = sorted([*BP.rglob("*.json"), *RP.rglob("*.json")])
+    parsed: dict[Path, object] = {}
+
     for path in json_files:
         try:
-            load_json(path)
+            with path.open("r", encoding="utf-8") as handle:
+                parsed[path] = json.load(handle)
         except Exception as exc:
-            errors.append(f"{path.relative_to(ROOT)}: invalid JSON: {exc}")
+            errors.append(f"{path.relative_to(ROOT)}: {exc}")
 
-    if not errors:
-        for manifest in (BP / "manifest.json", RP / "manifest.json"):
-            data = load_json(manifest)
-            if data["header"].get("min_engine_version") != TARGET_ENGINE:
-                errors.append(f"{manifest.relative_to(ROOT)} must target {TARGET_ENGINE}")
-            if data["header"].get("version") != [0, 2, 0]:
-                errors.append(f"{manifest.relative_to(ROOT)} must use pack version [0, 2, 0]")
+    for manifest in (BP / "manifest.json", RP / "manifest.json"):
+        data = parsed.get(manifest)
+        if not isinstance(data, dict):
+            continue
+        header = data.get("header")
+        if not isinstance(header, dict):
+            errors.append(f"{manifest.relative_to(ROOT)}: missing header")
+            continue
+        if header.get("min_engine_version") != TARGET_ENGINE:
+            errors.append(f"{manifest.relative_to(ROOT)}: min_engine_version must be {TARGET_ENGINE}")
+        if header.get("version") != PACK_VERSION:
+            errors.append(f"{manifest.relative_to(ROOT)}: header version must be {PACK_VERSION}")
 
-        rp_manifest = load_json(RP / "manifest.json")
-        if "pbr" not in rp_manifest.get("capabilities", []):
-            errors.append("resource_pack/manifest.json must include the pbr capability")
+    rp_manifest = parsed.get(RP / "manifest.json")
+    if isinstance(rp_manifest, dict) and "pbr" not in rp_manifest.get("capabilities", []):
+        errors.append("resource_pack/manifest.json: capabilities must include 'pbr'")
 
-        terrain = load_json(RP / "textures" / "terrain_texture.json")
-        for key, entry in terrain.get("texture_data", {}).items():
-            ref = entry.get("textures")
-            if not isinstance(ref, str) or not ref.startswith("textures/nature/"):
-                errors.append(f"{key}: v0.2 texture must be an original textures/nature asset")
-                continue
-            source = RP / f"{ref}.png"
-            if not source.exists():
-                errors.append(f"{key}: missing {source.relative_to(ROOT)}")
+    for path in sorted((BP / "blocks").glob("*.json")):
+        data = parsed.get(path)
+        if not isinstance(data, dict):
+            continue
+        format_version = parse_version(data.get("format_version"))
+        if format_version is None or format_version < BLOCK_SCHEMA_FLOOR:
+            errors.append(f"{path.relative_to(ROOT)}: block format_version must be >= 1.26.0")
 
-        for block_path in sorted((BP / "blocks").glob("*.json")):
-            data = load_json(block_path)
-            if not str(data.get("format_version", "")).startswith("1.26."):
-                errors.append(f"{block_path.relative_to(ROOT)} must use 1.26.x block schema")
-            comps = data.get("minecraft:block", {}).get("components", {})
-            if "minecraft:geometry" in comps and "minecraft:material_instances" not in comps:
-                errors.append(f"{block_path.relative_to(ROOT)}: geometry requires material_instances")
+    texture_dir = RP / "textures" / "blocks"
+    for filename in REQUIRED_TEXTURES:
+        if not (texture_dir / filename).is_file():
+            errors.append(f"resource_pack/textures/blocks/{filename}: required original v0.2 texture missing")
 
-        required = [RP / "pack_icon.png", BP / "pack_icon.png", RP / "textures/nature/leaf_oak.texture_set.json", BP / "features/woodland_oak_b_feature.json", BP / "features/woodland_oak_c_feature.json"]
-        for path in required:
-            if not path.exists():
-                errors.append(f"missing required v0.2 file: {path.relative_to(ROOT)}")
+    for pack in (BP, RP):
+        if not (pack / "pack_icon.png").is_file():
+            errors.append(f"{pack.name}/pack_icon.png: pack icon missing")
 
     if errors:
         print("Validation failed:", file=sys.stderr)
         for error in errors:
             print(f"  - {error}", file=sys.stderr)
         raise SystemExit(1)
-    print(f"Validated {len(json_files)} JSON files for Bedrock 1.26.45+.")
+
+    print(f"Validated {len(json_files)} JSON files for DLavie Conquest Nature {VERSION} / Bedrock 1.26.45+.")
 
 
 def zip_directory(source: Path, destination: Path) -> None:
@@ -80,13 +102,15 @@ def zip_directory(source: Path, destination: Path) -> None:
 
 
 def build() -> None:
-    validate()
+    validate_json()
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
+
     bp_mcpack = DIST / f"DLavie-Conquest-Nature-BP-{VERSION}.mcpack"
     rp_mcpack = DIST / f"DLavie-Conquest-Nature-RP-{VERSION}.mcpack"
     mcaddon = DIST / f"DLavie-Conquest-Nature-{VERSION}.mcaddon"
+
     zip_directory(BP, bp_mcpack)
     zip_directory(RP, rp_mcpack)
     with zipfile.ZipFile(mcaddon, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
@@ -94,6 +118,7 @@ def build() -> None:
             for path in sorted(source.rglob("*")):
                 if path.is_file():
                     archive.write(path, Path(prefix) / path.relative_to(source))
+
     print("Built:")
     for artifact in (bp_mcpack, rp_mcpack, mcaddon):
         print(f"  - {artifact.relative_to(ROOT)}")

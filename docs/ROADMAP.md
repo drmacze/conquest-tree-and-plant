@@ -1,25 +1,26 @@
 # DLavie Conquest Nature Roadmap
 
 ## v0.1 — Functional foundation ✅
-- Bedrock behavior/resource pack manifests
-- Custom fern and grass blocks
-- Airy leaf-cluster geometry
-- Oak world generation
-- Forest floor scattering
-- Bedrock 1.26.45+ compatibility lock
+- BP/RP manifests
+- Initial fern + grass
+- Leaf cluster geometry
+- Oak worldgen
+- Bedrock 1.26.45+ validation
 
 ## v0.2 — Visual identity ✅
-- Original DLavie nature textures
-- Bark end-cap material
-- Three foliage silhouettes
-- Fancy-trunk procedural oak branches
-- Three woodland oak variants + ancient oak
+- Original DLavie bark/end-grain textures
+- Original oak foliage and ground plants
 - Clover, heather and nettle
+- Five-plane leaf cluster geometry
+- Fancy-trunk organic oak branching
+- Plains/meadow vegetation pass
 - Vibrant Visuals `pbr` capability
-- PBR texture sets with foliage subsurface values
-- Pack icon and localized names
+- PBR roughness + foliage subsurface texture sets
+- Pack icons
 
 ## v0.3 — Tree library
+Target species and forms:
+- Oak additional silhouettes / age classes
 - Birch
 - Beech
 - Pine
@@ -31,19 +32,19 @@
 - Dead tree
 - Fallen logs
 
-Each species will receive multiple silhouettes and age classes. Oak will also gain additional ancient/rooted variants.
+Goal: multiple silhouettes per species so forests do not visibly repeat the same tree.
 
 ## v0.4 — Plant library
 - Tall fern
 - Dry grass
-- Reed
-- Cattail
+- Reeds
+- Cattails
 - Ivy
 - Moss
 - Bramble
 - Wildflowers
 - Mushrooms
-- Wetland vegetation
+- Forest edge / wetland / alpine variants
 
 ## v0.5 — Survival and optimization
 - Saplings and growth logic
@@ -51,12 +52,13 @@ Each species will receive multiple silhouettes and age classes. Oak will also ga
 - Leaf decay strategy
 - Biome-aware density presets
 - Mobile performance profiles
-- Android/iOS compatibility testing
+- iOS/Android regression testing
 
-## v1.0 — Full release target
-- Mature tree and plant library
-- Stable worldgen
-- Survival integration
-- PBR/Vibrant Visuals art pass
-- Mobile optimization
-- Migration-safe pack versioning
+## v1.0 — Full nature release
+- Complete art pass
+- Complete tree + plant library
+- Tuned biome distributions
+- Survival mechanics
+- Vibrant Visuals polish
+- Performance budget and compatibility suite
+- Production `.mcaddon` packaging

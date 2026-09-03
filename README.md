@@ -1,43 +1,47 @@
 # DLavie Conquest Nature
 
-A Minecraft Bedrock nature add-on focused on organic, Conquest-inspired trees and plants, built from scratch with original DLavie assets.
+A Minecraft Bedrock nature add-on focused on organic, realistic, Conquest-inspired trees and plants using original DLavie assets.
 
-> Current development version: **v0.2.0 — Visual Identity**
-> Required game version: **Minecraft Bedrock 1.26.45 or newer**.
+> Current version: **v0.2.0 — Visual Identity**  
+> Required game version: **Minecraft Bedrock 1.26.45+**
 
 ## v0.2 highlights
 
-- Original DLavie bark, leaf, fern, grass, clover, heather and nettle textures
-- Custom oak bark end-cap
-- Three non-cubic foliage silhouettes
-- Fancy-trunk oak generation with procedural branches
-- Three woodland oak silhouettes plus a rarer ancient oak
-- Expanded forest-floor vegetation mix
-- Vibrant Visuals PBR capability and texture sets
-- Subsurface response for foliage in Vibrant Visuals
-- Pack icon and localized in-game block names
-- Build validation locked to Bedrock 1.26.45+
+- Original DLavie textures replace the temporary vanilla texture references.
+- New bark side + end-grain materials.
+- New oak leaf, fern, meadow grass, clover, heather and nettle artwork.
+- Five-plane oak leaf cluster geometry for a less cubic canopy silhouette.
+- Woodland and Ancient Oak now use Bedrock `fancy_trunk` branch generation.
+- Added clover, heather and nettle custom blocks.
+- Expanded forest-floor vegetation weights.
+- Added a separate plains/meadow vegetation distribution pass.
+- Resource Pack enables the cross-platform `pbr` capability for Vibrant Visuals.
+- PBR texture sets define roughness and foliage subsurface scattering.
+- New pack icon for both BP and RP.
+- Build validation remains locked to Bedrock `min_engine_version: [1, 26, 45]`.
 
-The pack no longer relies on vanilla texture references for its custom nature blocks.
+## Current scope
 
-## Current tree system
+v0.2 is a major visual/technical step, but **it is not the full pack yet**. The next versions expand tree species, silhouettes, plants, survival mechanics and mobile optimization.
 
-v0.2 uses Bedrock `minecraft:tree_feature` with `fancy_trunk` for oak trees. Branch slope, density, canopy size and trunk width vary between definitions, while a weighted selector makes ancient oaks uncommon.
+## Target roadmap
 
-This is still **not the full release**. The next milestone is v0.3, which expands the tree library with birch, beech, pine, spruce, fir, willow, cypress, maple, dead trees and fallen logs.
+- **v0.3 — Tree Library:** birch, beech, pine, spruce, fir, willow, cypress, maple, dead trees and fallen logs.
+- **v0.4 — Plant Library:** dry grass, reeds, cattails, ivy, moss, bramble, wildflowers, mushrooms and more.
+- **v0.5 — Survival & Optimization:** saplings, growth logic, loot, leaf decay, biome density presets and mobile profiles.
+- **v1.0 — Full Nature Release:** polished worldgen, complete library, compatibility testing and production packaging.
 
-## Target platforms
+## Compatibility
 
-- Minecraft Bedrock 1.26.45+
-- Android
-- iOS
-- Vibrant Visuals capable devices
-- Classic renderer fallback
+- Minecraft Bedrock **1.26.45+** only.
+- Android and iOS are primary targets.
+- No experimental toggle is required by the current v0.2 content.
+- Vibrant Visuals is supported through Bedrock's `pbr` resource-pack capability.
 
 ## Namespace
 
-All custom content uses `dlavie:`.
+All custom content uses the `dlavie:` namespace.
 
 ## Asset policy
 
-This project is inspired by realistic Minecraft foliage and the overall natural-world feel associated with projects such as Conquest Reforged. It does not redistribute Conquest Reforged models or textures.
+This project is inspired by realistic Minecraft foliage design. It does not redistribute or directly port Conquest Reforged textures or models; v0.2 uses original DLavie visual assets.
