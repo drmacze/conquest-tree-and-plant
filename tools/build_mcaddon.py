@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the add-on JSON files and package Bedrock importable artifacts."""
+"""Validate and package DLavie Conquest Nature for Bedrock 1.26.45+."""
 
 from __future__ import annotations
 
@@ -13,9 +13,20 @@ ROOT = Path(__file__).resolve().parents[1]
 BP = ROOT / "behavior_pack"
 RP = ROOT / "resource_pack"
 DIST = ROOT / "dist"
-VERSION = "0.1.0"
+VERSION = "0.2.0"
+PACK_VERSION = [0, 2, 0]
 TARGET_ENGINE = [1, 26, 45]
 BLOCK_SCHEMA_FLOOR = (1, 26, 0)
+REQUIRED_TEXTURES = [
+    "dlavie_branch_bark.png",
+    "dlavie_branch_end.png",
+    "dlavie_leaf_oak.png",
+    "dlavie_fern.png",
+    "dlavie_meadow_grass.png",
+    "dlavie_clover.png",
+    "dlavie_heather.png",
+    "dlavie_nettle.png",
+]
 
 
 def parse_version(value: object) -> tuple[int, int, int] | None:
@@ -37,7 +48,7 @@ def validate_json() -> None:
         try:
             with path.open("r", encoding="utf-8") as handle:
                 parsed[path] = json.load(handle)
-        except Exception as exc:  # noqa: BLE001 - CLI validation should report any parse failure
+        except Exception as exc:
             errors.append(f"{path.relative_to(ROOT)}: {exc}")
 
     for manifest in (BP / "manifest.json", RP / "manifest.json"):
@@ -45,12 +56,17 @@ def validate_json() -> None:
         if not isinstance(data, dict):
             continue
         header = data.get("header")
-        min_engine = header.get("min_engine_version") if isinstance(header, dict) else None
-        if min_engine != TARGET_ENGINE:
-            errors.append(
-                f"{manifest.relative_to(ROOT)}: min_engine_version must be {TARGET_ENGINE} "
-                "to guarantee Minecraft Bedrock 1.26.45+ targeting"
-            )
+        if not isinstance(header, dict):
+            errors.append(f"{manifest.relative_to(ROOT)}: missing header")
+            continue
+        if header.get("min_engine_version") != TARGET_ENGINE:
+            errors.append(f"{manifest.relative_to(ROOT)}: min_engine_version must be {TARGET_ENGINE}")
+        if header.get("version") != PACK_VERSION:
+            errors.append(f"{manifest.relative_to(ROOT)}: header version must be {PACK_VERSION}")
+
+    rp_manifest = parsed.get(RP / "manifest.json")
+    if isinstance(rp_manifest, dict) and "pbr" not in rp_manifest.get("capabilities", []):
+        errors.append("resource_pack/manifest.json: capabilities must include 'pbr'")
 
     for path in sorted((BP / "blocks").glob("*.json")):
         data = parsed.get(path)
@@ -58,10 +74,16 @@ def validate_json() -> None:
             continue
         format_version = parse_version(data.get("format_version"))
         if format_version is None or format_version < BLOCK_SCHEMA_FLOOR:
-            errors.append(
-                f"{path.relative_to(ROOT)}: block format_version must be >= "
-                f"{'.'.join(map(str, BLOCK_SCHEMA_FLOOR))} for the 1.26 geometry semantics"
-            )
+            errors.append(f"{path.relative_to(ROOT)}: block format_version must be >= 1.26.0")
+
+    texture_dir = RP / "textures" / "blocks"
+    for filename in REQUIRED_TEXTURES:
+        if not (texture_dir / filename).is_file():
+            errors.append(f"resource_pack/textures/blocks/{filename}: required original v0.2 texture missing")
+
+    for pack in (BP, RP):
+        if not (pack / "pack_icon.png").is_file():
+            errors.append(f"{pack.name}/pack_icon.png: pack icon missing")
 
     if errors:
         print("Validation failed:", file=sys.stderr)
@@ -69,7 +91,7 @@ def validate_json() -> None:
             print(f"  - {error}", file=sys.stderr)
         raise SystemExit(1)
 
-    print(f"Validated {len(json_files)} JSON files for Minecraft Bedrock 1.26.45+.")
+    print(f"Validated {len(json_files)} JSON files for DLavie Conquest Nature {VERSION} / Bedrock 1.26.45+.")
 
 
 def zip_directory(source: Path, destination: Path) -> None:
@@ -81,7 +103,6 @@ def zip_directory(source: Path, destination: Path) -> None:
 
 def build() -> None:
     validate_json()
-
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
@@ -92,12 +113,8 @@ def build() -> None:
 
     zip_directory(BP, bp_mcpack)
     zip_directory(RP, rp_mcpack)
-
     with zipfile.ZipFile(mcaddon, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
-        for prefix, source in (
-            ("DLavie_Conquest_Nature_BP", BP),
-            ("DLavie_Conquest_Nature_RP", RP),
-        ):
+        for prefix, source in (("DLavie_Conquest_Nature_BP", BP), ("DLavie_Conquest_Nature_RP", RP)):
             for path in sorted(source.rglob("*")):
                 if path.is_file():
                     archive.write(path, Path(prefix) / path.relative_to(source))

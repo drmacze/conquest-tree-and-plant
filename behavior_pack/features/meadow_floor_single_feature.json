@@ -1,12 +1,10 @@
 {
   "format_version": "1.26.0",
   "minecraft:single_block_feature": {
-    "description": {"identifier": "dlavie:forest_floor_single_feature"},
+    "description": {"identifier": "dlavie:meadow_floor_single_feature"},
     "places_block": [
-      {"block": "dlavie:forest_fern", "weight": 6},
-      {"block": "dlavie:meadow_grass", "weight": 3},
-      {"block": "dlavie:nettle", "weight": 2},
-      {"block": "dlavie:clover_patch", "weight": 2},
+      {"block": "dlavie:meadow_grass", "weight": 7},
+      {"block": "dlavie:clover_patch", "weight": 4},
       {"block": "dlavie:heather", "weight": 1}
     ],
     "randomize_rotation": true,

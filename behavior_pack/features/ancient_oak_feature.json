@@ -1,56 +1,23 @@
 {
-  "format_version": "1.21.60",
+  "format_version": "1.26.0",
   "minecraft:tree_feature": {
-    "description": {
-      "identifier": "dlavie:ancient_oak_feature"
+    "description": {"identifier": "dlavie:ancient_oak_feature"},
+    "base_block": ["minecraft:dirt", "minecraft:grass_block", "minecraft:podzol", "minecraft:coarse_dirt"],
+    "may_grow_on": ["minecraft:dirt", "minecraft:grass_block", "minecraft:podzol", "minecraft:coarse_dirt"],
+    "may_replace": ["minecraft:air", "minecraft:oak_leaves", "minecraft:birch_leaves", "dlavie:forest_fern", "dlavie:meadow_grass", "dlavie:clover_patch", "dlavie:heather", "dlavie:nettle"],
+    "may_grow_through": ["minecraft:air", "minecraft:oak_leaves", "minecraft:birch_leaves", "dlavie:forest_fern", "dlavie:meadow_grass", "dlavie:clover_patch", "dlavie:heather", "dlavie:nettle"],
+    "fancy_trunk": {
+      "trunk_height": {"base": 12, "variance": 6, "scale": 1.0},
+      "trunk_width": 2,
+      "branches": {"slope": 0.22, "density": 0.82, "min_altitude_factor": 0.28},
+      "trunk_block": "dlavie:branch_log",
+      "width_scale": 1.15,
+      "foliage_altitude_factor": 0.22
     },
-    "base_block": [
-      "minecraft:dirt",
-      "minecraft:grass_block",
-      "minecraft:podzol",
-      "minecraft:coarse_dirt"
-    ],
-    "may_grow_on": [
-      "minecraft:dirt",
-      "minecraft:grass_block",
-      "minecraft:podzol",
-      "minecraft:coarse_dirt"
-    ],
-    "may_replace": [
-      "minecraft:air",
-      "minecraft:oak_leaves",
-      "minecraft:birch_leaves",
-      "dlavie:forest_fern",
-      "dlavie:meadow_grass"
-    ],
-    "may_grow_through": [
-      "minecraft:air",
-      "minecraft:oak_leaves",
-      "minecraft:birch_leaves",
-      "dlavie:forest_fern",
-      "dlavie:meadow_grass"
-    ],
-    "trunk": {
-      "trunk_height": {
-        "base": 10,
-        "intervals": [
-          4,
-          3,
-          2
-        ]
-      },
-      "trunk_block": "dlavie:branch_log"
-    },
-    "random_spread_canopy": {
-      "canopy_height": 6,
-      "canopy_radius": 5,
-      "leaf_placement_attempts": 110,
-      "leaf_blocks": [
-        [
-          "dlavie:leaf_cluster",
-          1.0
-        ]
-      ]
+    "fancy_canopy": {
+      "height": 6,
+      "radius": 5,
+      "leaf_block": "dlavie:leaf_cluster"
     }
   }
 }

@@ -2,15 +2,15 @@
   "format_version": "1.26.20",
   "minecraft:block": {
     "description": {
-      "identifier": "dlavie:meadow_grass",
+      "identifier": "dlavie:nettle",
       "menu_category": {"category": "nature"}
     },
     "components": {
       "minecraft:geometry": "minecraft:geometry.cross",
       "minecraft:material_instances": {
-        "*": {"texture": "dlavie_meadow_grass", "render_method": "double_sided", "ambient_occlusion": 0.0}
+        "*": {"texture": "dlavie_nettle", "render_method": "double_sided", "ambient_occlusion": 0.0}
       },
-      "minecraft:destructible_by_mining": {"seconds_to_destroy": 0.03},
+      "minecraft:destructible_by_mining": {"seconds_to_destroy": 0.05},
       "minecraft:collision_box": false,
       "minecraft:selection_box": {"origin": [-6, 0, -6], "size": [12, 13, 12]},
       "minecraft:light_dampening": 0
