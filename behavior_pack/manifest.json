@@ -2,7 +2,7 @@
   "format_version": 2,
   "header": {
     "name": "DLavie Conquest Nature - Behavior",
-    "description": "Conquest-inspired trees and ground vegetation for modern Minecraft Bedrock.",
+    "description": "Conquest-inspired trees and ground vegetation for Minecraft Bedrock 1.26.45+.",
     "uuid": "5c7dc4d5-61cf-40bb-a8ec-333c00dc462a",
     "version": [
       0,
@@ -12,7 +12,7 @@
     "min_engine_version": [
       1,
       26,
-      0
+      45
     ]
   },
   "modules": [
