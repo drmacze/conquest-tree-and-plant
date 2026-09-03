@@ -9,14 +9,15 @@ import sys
 import zipfile
 from pathlib import Path
 
+from apply_species_visuals import PAIRS, apply as apply_species_visuals
 from generate_obj_runtime_assets import generate as generate_obj_runtime_assets
 
 ROOT = Path(__file__).resolve().parents[1]
 BP = ROOT / "behavior_pack"
 RP = ROOT / "resource_pack"
 DIST = ROOT / "dist"
-VERSION = "0.3.1"
-PACK_VERSION = [0, 3, 1]
+VERSION = "0.3.2"
+PACK_VERSION = [0, 3, 2]
 TARGET_ENGINE = [1, 26, 45]
 BLOCK_SCHEMA_FLOOR = (1, 26, 0)
 REQUIRED_TEXTURES = [
@@ -30,6 +31,20 @@ REQUIRED_TEXTURES = [
     "dlavie_nettle.png",
     "dlavie_obj_bark.png",
     "dlavie_obj_leaf.png",
+    "dlavie_wal_bark.png",
+    "dlavie_wal_leaf.png",
+    "dlavie_mos_bark.png",
+    "dlavie_mos_leaf.png",
+    "dlavie_sml_bark.png",
+    "dlavie_sml_leaf.png",
+    "dlavie_oak_bark.png",
+    "dlavie_oak_leaf.png",
+    "dlavie_gnt_bark.png",
+    "dlavie_gnt_leaf.png",
+    "dlavie_son_bark.png",
+    "dlavie_son_leaf.png",
+    "dlavie_tal_bark.png",
+    "dlavie_tal_leaf.png",
 ]
 OBJ_STRUCTURE_NAMES = [
     "obj_oak_01",
@@ -93,9 +108,21 @@ def validate_json() -> None:
     for filename in REQUIRED_TEXTURES:
         if not (texture_dir / filename).is_file():
             errors.append(f"resource_pack/textures/blocks/{filename}: required texture missing")
+
     for structure in REQUIRED_STRUCTURES:
         if not structure.is_file() or structure.stat().st_size < 128:
             errors.append(f"{structure.relative_to(ROOT)}: required OBJ-derived structure missing or invalid")
+
+    for name, (branch, leaf) in PAIRS.items():
+        path = BP / "structures" / "dlavie" / f"{name}.mcstructure"
+        if not path.is_file():
+            continue
+        data = path.read_bytes()
+        branch_id = f"dlavie:{branch}".encode()
+        leaf_id = f"dlavie:{leaf}".encode()
+        if branch_id not in data or leaf_id not in data:
+            errors.append(f"{path.relative_to(ROOT)}: species-specific visual palette missing")
+
     for pack in (BP, RP):
         if not (pack / "pack_icon.png").is_file():
             errors.append(f"{pack.name}/pack_icon.png: pack icon missing")
@@ -120,6 +147,7 @@ def zip_directory(source: Path, destination: Path) -> None:
 
 def build() -> None:
     generate_obj_runtime_assets(ROOT)
+    apply_species_visuals(ROOT)
     validate_json()
     if DIST.exists():
         shutil.rmtree(DIST)
