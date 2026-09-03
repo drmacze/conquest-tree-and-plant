@@ -11,6 +11,8 @@
     "dlavie_branch_end": {"textures": "textures/blocks/dlavie_branch_end"},
     "dlavie_clover": {"textures": "textures/blocks/dlavie_clover"},
     "dlavie_heather": {"textures": "textures/blocks/dlavie_heather"},
-    "dlavie_nettle": {"textures": "textures/blocks/dlavie_nettle"}
+    "dlavie_nettle": {"textures": "textures/blocks/dlavie_nettle"},
+    "dlavie_obj_bark": {"textures": "textures/blocks/dlavie_obj_bark"},
+    "dlavie_obj_leaf": {"textures": "textures/blocks/dlavie_obj_leaf"}
   }
 }
