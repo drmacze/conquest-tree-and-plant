@@ -1,47 +1,40 @@
 # DLavie Conquest Nature
 
-A Minecraft Bedrock nature add-on focused on organic, realistic, Conquest-inspired trees and plants using original DLavie assets.
+A Minecraft Bedrock nature add-on focused on organic, realistic trees and plants reconstructed from high-detail OBJ source art.
 
-> Current version: **v0.2.0 — Visual Identity**  
+> Current version: **v0.3.2 — OBJ Source-Atlas Visual Pass**  
 > Required game version: **Minecraft Bedrock 1.26.45+**
 
-## v0.2 highlights
+## v0.3.2 highlights
 
-- Original DLavie textures replace the temporary vanilla texture references.
-- New bark side + end-grain materials.
-- New oak leaf, fern, meadow grass, clover, heather and nettle artwork.
-- Five-plane oak leaf cluster geometry for a less cubic canopy silhouette.
-- Woodland and Ancient Oak now use Bedrock `fancy_trunk` branch generation.
-- Added clover, heather and nettle custom blocks.
-- Expanded forest-floor vegetation weights.
-- Added a separate plains/meadow vegetation distribution pass.
-- Resource Pack enables the cross-platform `pbr` capability for Vibrant Visuals.
-- PBR texture sets define roughness and foliage subsurface scattering.
-- New pack icon for both BP and RP.
-- Build validation remains locked to Bedrock `min_engine_version: [1, 26, 45]`.
+- Seven mobile-optimized tree silhouettes reconstructed from the supplied high-detail OBJ pack.
+- Runtime library: Oak, Walnut, Mossy Tree, Small Bark Tree, Sonnerat, Tall Bark Tree and Giant Tree.
+- Every tree now has its own bark and foliage material generated from the corresponding supplied source texture atlas.
+- OBJ tree worldgen no longer falls back to the old vanilla-looking procedural oak variants.
+- Custom non-full-block branch geometry replaces vanilla log silhouettes on the OBJ tree library.
+- Foliage uses a denser eight-card 3D cluster instead of cubic vanilla leaf blocks.
+- Species-specific PBR roughness and foliage subsurface values are retained for Vibrant Visuals.
+- Structures are rotated randomly during world generation and remain optimized for Android/iOS.
+- Build validation checks all seven OBJ structures, species-specific palettes, textures and Bedrock 1.26.45 minimum targeting.
 
-## Current scope
+## Runtime approach
 
-v0.2 is a major visual/technical step, but **it is not the full pack yet**. The next versions expand tree species, silhouettes, plants, survival mechanics and mobile optimization.
-
-## Target roadmap
-
-- **v0.3 — Tree Library:** birch, beech, pine, spruce, fir, willow, cypress, maple, dead trees and fallen logs.
-- **v0.4 — Plant Library:** dry grass, reeds, cattails, ivy, moss, bramble, wildflowers, mushrooms and more.
-- **v0.5 — Survival & Optimization:** saplings, growth logic, loot, leaf decay, biome density presets and mobile profiles.
-- **v1.0 — Full Nature Release:** polished worldgen, complete library, compatibility testing and production packaging.
+The original OBJ meshes are source art, not direct runtime models. They are too dense for practical mobile Bedrock world generation, so the build pipeline measures/reconstructs their silhouettes into custom branch nodes, foliage cards and `.mcstructure` templates. This preserves the recognizable tree form while keeping the pack usable on mobile devices.
 
 ## Compatibility
 
 - Minecraft Bedrock **1.26.45+** only.
 - Android and iOS are primary targets.
-- No experimental toggle is required by the current v0.2 content.
-- Vibrant Visuals is supported through Bedrock's `pbr` resource-pack capability.
+- Resource Pack enables Bedrock's `pbr` capability for Vibrant Visuals.
+- No experimental toggle is intentionally required by the current v0.3.2 content.
+
+## Roadmap
+
+- **v0.3.3 — Tree Form Pass:** stronger roots, more irregular trunk thickness, extra branch-node geometry and per-tree foliage density tuning.
+- **v0.4 — Plant Library:** dry grass, reeds, cattails, ivy, moss, bramble, wildflowers, mushrooms and additional forest-floor vegetation.
+- **v0.5 — Survival & Optimization:** saplings, growth logic, loot, leaf behavior, biome density presets and mobile performance profiles.
+- **v1.0 — Full Nature Release:** polished worldgen, complete nature library, compatibility testing and release packaging.
 
 ## Namespace
 
 All custom content uses the `dlavie:` namespace.
-
-## Asset policy
-
-This project is inspired by realistic Minecraft foliage design. It does not redistribute or directly port Conquest Reforged textures or models; v0.2 uses original DLavie visual assets.
