@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 BP = ROOT / "behavior_pack"
 RP = ROOT / "resource_pack"
 DIST = ROOT / "dist"
-VERSION = "0.3.0"
-PACK_VERSION = [0, 3, 0]
+VERSION = "0.3.1"
+PACK_VERSION = [0, 3, 1]
 TARGET_ENGINE = [1, 26, 45]
 BLOCK_SCHEMA_FLOOR = (1, 26, 0)
 REQUIRED_TEXTURES = [
@@ -31,7 +31,16 @@ REQUIRED_TEXTURES = [
     "dlavie_obj_bark.png",
     "dlavie_obj_leaf.png",
 ]
-REQUIRED_STRUCTURES = [BP / "structures" / "dlavie" / "obj_oak_01.mcstructure"]
+OBJ_STRUCTURE_NAMES = [
+    "obj_oak_01",
+    "obj_walnut_01",
+    "obj_mossy_01",
+    "obj_bark_small_01",
+    "obj_giant_01",
+    "obj_sonnerat_01",
+    "obj_bark_tall_01",
+]
+REQUIRED_STRUCTURES = [BP / "structures" / "dlavie" / f"{name}.mcstructure" for name in OBJ_STRUCTURE_NAMES]
 
 
 def parse_version(value: object) -> tuple[int, int, int] | None:
@@ -96,7 +105,10 @@ def validate_json() -> None:
         for error in errors:
             print(f"  - {error}", file=sys.stderr)
         raise SystemExit(1)
-    print(f"Validated {len(json_files)} JSON files + OBJ structure for DLavie Conquest Nature {VERSION} / Bedrock 1.26.45+.")
+    print(
+        f"Validated {len(json_files)} JSON files + {len(REQUIRED_STRUCTURES)} OBJ structures "
+        f"for DLavie Conquest Nature {VERSION} / Bedrock 1.26.45+."
+    )
 
 
 def zip_directory(source: Path, destination: Path) -> None:
