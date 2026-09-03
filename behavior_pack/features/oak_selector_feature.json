@@ -5,14 +5,9 @@
       "identifier": "dlavie:oak_selector_feature"
     },
     "features": [
-      [
-        "dlavie:woodland_oak_feature",
-        8
-      ],
-      [
-        "dlavie:ancient_oak_feature",
-        2
-      ]
+      ["dlavie:obj_oak_01_structure_feature", 9],
+      ["dlavie:woodland_oak_feature", 1],
+      ["dlavie:ancient_oak_feature", 1]
     ]
   }
 }
