@@ -2,22 +2,22 @@
   "format_version": 2,
   "header": {
     "name": "DLavie Conquest Nature - Behavior",
-    "description": "Seven OBJ-derived Conquest-inspired tree silhouettes and organic vegetation for Minecraft Bedrock 1.26.45+.",
+    "description": "Seven OBJ-derived Conquest-style trees with species-specific source textures for Minecraft Bedrock 1.26.45+.",
     "uuid": "5c7dc4d5-61cf-40bb-a8ec-333c00dc462a",
-    "version": [0, 3, 1],
+    "version": [0, 3, 2],
     "min_engine_version": [1, 26, 45]
   },
   "modules": [
     {
       "type": "data",
       "uuid": "d286b8c6-d13c-4ef0-9574-4d707802fb27",
-      "version": [0, 3, 1]
+      "version": [0, 3, 2]
     }
   ],
   "dependencies": [
     {
       "uuid": "a139186a-b93b-47da-848b-1a2c06e41506",
-      "version": [0, 3, 1]
+      "version": [0, 3, 2]
     }
   ],
   "metadata": {
